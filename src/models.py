@@ -5,7 +5,7 @@ db = SQLAlchemy()
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(80), unique=False, nullable=False)
+    password = db.Column(db.String(300), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
     def __repr__(self):
@@ -24,13 +24,13 @@ class Patient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=False, nullable=False)
     last_name=db.Column(db.String(120), unique=False, nullable=False)
-    dni = db.Column(db.Integer, unique=True, nullable=False)
+    dni = db.Column(db.String(15), unique=True, nullable=False)
     parish = db.Column(db.String(50), unique=False, nullable=False)
     city = db.Column(db.String(50), unique=False, nullable=False)
     mun = db.Column(db.String(40), unique=False, nullable=False)
     date = db.Column(db.Date, unique=False, nullable=True)
     gender = db.Column(db.String(20), unique=False, nullable=False)
-    number = db.Column(db.Integer, unique=False, nullable=False)
+    number = db.Column(db.String(15), unique=False, nullable=False)
     ant_fam= db.Column(db.String(1000), unique=False, nullable=False)
     ant_per= db.Column(db.String(1000), unique=False, nullable=False)
     record = db.relationship("Record", backref="patient", lazy=True)
@@ -68,6 +68,7 @@ class Record(db.Model):
     symtomps=db.Column(db.String(1000), unique=False, nullable=False)
     phy_exa=db.Column(db.String(1000), unique=False, nullable=False)
     signs=db.Column(db.String(1000), unique=False, nullable=False)
+    type_pat=db.Column(db.String(30), unique=False, nullable=False)
     observations=db.Column(db.String(1000), unique=False, nullable=False)
     id_patient = db.Column(db.Integer, db.ForeignKey("patient.id"), nullable=False)
     record_obstr = db.relationship("Record_Obst", backref="record", lazy=True)
@@ -90,7 +91,9 @@ class Record(db.Model):
             "symtomps": self.symtomps,
             "phy_exa": self.phy_exa,
             "signs": self.signs,
+            "type_pat": self.type_pat,
             "observations": self.observations,
+
 
         }
 
@@ -138,6 +141,7 @@ class Pay(db.Model):
             "pay_mov": self.pay_mov,
             "biopago": self.biopago,
             "point": self.point,
+            "id_record": self.id_record,
 
         }
 
